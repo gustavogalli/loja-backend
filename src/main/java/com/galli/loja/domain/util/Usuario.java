@@ -1,4 +1,4 @@
-package com.galli.loja.domain;
+package com.galli.loja.domain.util;
 
 public abstract class Usuario {
 

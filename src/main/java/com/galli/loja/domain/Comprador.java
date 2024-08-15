@@ -1,5 +1,6 @@
 package com.galli.loja.domain;
 
+import com.galli.loja.domain.util.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comprador extends Usuario{
+public class Comprador extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

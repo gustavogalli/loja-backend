@@ -1,5 +1,7 @@
 package com.galli.loja.domain;
 
+import com.galli.loja.domain.util.Usuario;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
