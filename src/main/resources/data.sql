@@ -1,0 +1,3 @@
+INSERT INTO users values('b1ad0972-2e23-4289-a604-b2e7adb1306f', '$2a$10$NWM0kcUU1csGRPXmz/LpM.z6XCRL2fANh1OQhonCsZC2fskKk5T/q', 'maria');
+INSERT INTO users values('c31afc55-5d43-4ed1-9685-eaacd0d47b6c', '$2a$10$NWM0kcUU1csGRPXmz/LpM.z6XCRL2fANh1OQhonCsZC2fskKk5T/q', 'pedro');
+INSERT INTO users values('3f394210-30b3-4ec0-b301-3dd67e31549d', '$2a$10$NWM0kcUU1csGRPXmz/LpM.z6XCRL2fANh1OQhonCsZC2fskKk5T/q', 'joao');

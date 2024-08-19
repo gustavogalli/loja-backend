@@ -2,6 +2,7 @@ package com.galli.loja.config.security.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,13 +19,14 @@ public class UserModel implements UserDetails, Serializable {
     private static final long serialVersionUid = 1L;
 
     @Id
+    @Type(type="uuid-char")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID userId;
 
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column(/*nullable = false*/)
     private String password;
 
     @Override
