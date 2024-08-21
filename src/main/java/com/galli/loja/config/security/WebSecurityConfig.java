@@ -4,6 +4,7 @@ import com.galli.loja.config.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,7 +22,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
 
         http.httpBasic()
-                .and().authorizeHttpRequests().anyRequest().authenticated()
+                .and().authorizeHttpRequests()
+                .antMatchers(HttpMethod.GET, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/login").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and().csrf().disable();
     }
 

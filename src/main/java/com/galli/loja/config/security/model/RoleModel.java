@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Entity(name = "model")
+@Entity(name = "roles")
 @Getter @Setter
 public class RoleModel implements GrantedAuthority, Serializable {
     private static final long serialVersionUid = 1L;
