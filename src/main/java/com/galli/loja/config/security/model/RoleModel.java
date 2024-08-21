@@ -1,6 +1,6 @@
 package com.galli.loja.config.security.model;
 
-import com.galli.loja.config.enums.RoleName;
+import com.galli.loja.config.security.enums.RoleName;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
