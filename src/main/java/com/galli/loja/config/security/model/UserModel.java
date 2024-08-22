@@ -1,5 +1,6 @@
 package com.galli.loja.config.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Entity(name = "users")
 @Getter @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserModel implements UserDetails, Serializable {
 
     private static final long serialVersionUid = 1L;
