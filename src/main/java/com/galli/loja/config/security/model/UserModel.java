@@ -1,5 +1,6 @@
 package com.galli.loja.config.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,6 +39,7 @@ public class UserModel implements UserDetails, Serializable {
     private List<RoleModel> roles;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;
     }
