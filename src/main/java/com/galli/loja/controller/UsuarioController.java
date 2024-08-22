@@ -1,5 +1,7 @@
 package com.galli.loja.controller;
 
+import com.galli.loja.config.security.enums.RoleName;
+import com.galli.loja.config.security.model.RoleModel;
 import com.galli.loja.config.security.model.UserModel;
 import com.galli.loja.config.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.management.relation.Role;
+import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
+import java.lang.Long;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -19,38 +25,43 @@ public class UsuarioController {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private EntityManager entityManager;
+
     @GetMapping
     public ResponseEntity<List<UserModel>> findAll(){
         return new ResponseEntity<>(this.repository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserModel> findById(@PathVariable UUID id){
+    public ResponseEntity<UserModel> findById(@PathVariable Long id){
         return new ResponseEntity<>(this.repository.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<UserModel> createUser(@RequestBody UserModel user){
+        List<RoleModel> roles = List.of(new RoleModel(2L, RoleName.ROLE_USER));
+        user.setRoles(roles);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         UserModel savedUser = this.repository.save(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserModel> updateUser(@PathVariable UUID id, @RequestBody UserModel userModel){
+    public ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody UserModel userModel){
         UserModel user = this.repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
 
         user.setUsername(userModel.getUsername());
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRoles(userModel.getRoles());
+//        user.setRoles(userModel.getRoles());
 
         UserModel updatedUser = this.repository.save(user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         UserModel user = this.repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
 
