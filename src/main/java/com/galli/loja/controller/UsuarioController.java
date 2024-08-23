@@ -7,19 +7,18 @@ import com.galli.loja.config.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.management.relation.Role;
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.lang.Long;
 
 @RestController
 @RequestMapping("/api/usuario")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UsuarioController {
 
     @Autowired
@@ -45,6 +44,17 @@ public class UsuarioController {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         UserModel savedUser = this.repository.save(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody UserModel loginRequest) {
+        UserModel user = repository.findByUsername(loginRequest.getUsername()).get();
+
+        if (new BCryptPasswordEncoder().matches(loginRequest.getPassword(), user.getPassword())) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+        }
     }
 
     @PutMapping("/{id}")

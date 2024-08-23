@@ -20,12 +20,13 @@ public class WebSecurityConfigV2 {
 
         http.httpBasic()
                 .and().authorizeHttpRequests()
+                .antMatchers(HttpMethod.POST, "/api/usuario").permitAll()
                 // Liberamos as permissões agora dentro da Controller
 //                .antMatchers(HttpMethod.GET, "/login").permitAll()
 //                .antMatchers(HttpMethod.POST, "/login").hasRole("USER")
 //                .antMatchers(HttpMethod.DELETE, "/login").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and().csrf().disable();
+                .anyRequest().permitAll()
+                .and().cors().and().csrf().disable();
 
         return http.build();
     }
