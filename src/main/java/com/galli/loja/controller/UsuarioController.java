@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.lang.Long;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -37,24 +38,30 @@ public class UsuarioController {
         return new ResponseEntity<>(this.repository.getById(id), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<UserModel> createUser(@RequestBody UserModel user){
-        List<RoleModel> roles = List.of(new RoleModel(2L, RoleName.ROLE_USER));
-        user.setRoles(roles);
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        UserModel savedUser = this.repository.save(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        if(this.repository.findByUsername(user.getUsername()).isPresent()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!");
+        } else {
+            List<RoleModel> roles = List.of(new RoleModel(2L, RoleName.ROLE_USER));
+            user.setRoles(roles);
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            UserModel savedUser = this.repository.save(user);
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody UserModel loginRequest) {
-        UserModel user = repository.findByUsername(loginRequest.getUsername()).get();
+        Optional<UserModel> user =repository.findByUsername(loginRequest.getUsername());
 
-        if (new BCryptPasswordEncoder().matches(loginRequest.getPassword(), user.getPassword())) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+        if(user.isPresent()){
+            if (new BCryptPasswordEncoder().matches(loginRequest.getPassword(), user.get().getPassword())) {
+                return ResponseEntity.ok(user);
+            }
         }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
     }
 
     @PutMapping("/{id}")
