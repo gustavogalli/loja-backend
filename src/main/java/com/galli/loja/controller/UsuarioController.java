@@ -53,7 +53,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody UserModel loginRequest) {
-        Optional<UserModel> user =repository.findByUsername(loginRequest.getUsername());
+        Optional<UserModel> user = repository.findByUsername(loginRequest.getUsername());
 
         if(user.isPresent()){
             if (new BCryptPasswordEncoder().matches(loginRequest.getPassword(), user.get().getPassword())) {
