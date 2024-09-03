@@ -22,8 +22,7 @@ public class Vendedor extends Usuario {
     public Long id;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "comprador_id")
+    @JoinColumn(name = "vendedor_id")
     public List<Produto> estoque = new ArrayList<>();
-
 
 }

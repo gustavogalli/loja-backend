@@ -2,6 +2,8 @@ package com.galli.loja.config.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.galli.loja.domain.Comprador;
+import com.galli.loja.domain.Vendedor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -36,6 +38,14 @@ public class UserModel implements UserDetails, Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<RoleModel> roles;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "comprador_id")
+    private Comprador comprador;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vendedor_id")
+    private Vendedor vendedor;
 
     @Override
     @JsonIgnore
