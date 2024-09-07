@@ -18,7 +18,7 @@ import java.lang.Long;
 @Entity(name = "users")
 @Getter @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class UserModel implements UserDetails, Serializable {
+public class Usuario implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -2,8 +2,9 @@ package com.galli.loja.controller;
 
 import com.galli.loja.config.security.enums.RoleName;
 import com.galli.loja.config.security.model.RoleModel;
-import com.galli.loja.config.security.model.UserModel;
+import com.galli.loja.config.security.model.Usuario;
 import com.galli.loja.config.security.repository.UserRepository;
+import com.galli.loja.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,32 +30,31 @@ public class UsuarioController {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private UsuarioService service;
+
     @GetMapping
-    public ResponseEntity<List<UserModel>> findAll(){
-        return new ResponseEntity<>(this.repository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<Usuario>> findAll(){
+        return new ResponseEntity<>(this.service.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserModel> findById(@PathVariable Long id){
-        return new ResponseEntity<>(this.repository.getById(id), HttpStatus.OK);
+    public ResponseEntity<Usuario> findById(@PathVariable Long id){
+        return new ResponseEntity<>(this.service.getById(id), HttpStatus.OK);
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<UserModel> createUser(@RequestBody UserModel user){
-        if(this.repository.findByUsername(user.getUsername()).isPresent()){
+    public ResponseEntity<Usuario> createUser(@RequestBody Usuario usuario){
+        if(this.repository.findByUsername(usuario.getUsername()).isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!");
         } else {
-            List<RoleModel> roles = List.of(new RoleModel(2L, RoleName.ROLE_USER));
-            user.setRoles(roles);
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            UserModel savedUser = this.repository.save(user);
-            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+            return new ResponseEntity<>(this.service.save(usuario), HttpStatus.CREATED);
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserModel loginRequest) {
-        Optional<UserModel> user = repository.findByUsername(loginRequest.getUsername());
+    public ResponseEntity<?> loginUser(@RequestBody Usuario loginRequest) {
+        Optional<Usuario> user = this.service.findByUsername(loginRequest);
 
         if(user.isPresent()){
             if (new BCryptPasswordEncoder().matches(loginRequest.getPassword(), user.get().getPassword())) {
@@ -74,24 +74,21 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody UserModel userModel){
-        UserModel user = this.repository.findById(id)
+    public ResponseEntity<Usuario> updateUser(@PathVariable Long id, @RequestBody Usuario usuario){
+        Usuario original = this.service.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
 
-        user.setUsername(userModel.getUsername());
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-//        user.setRoles(userModel.getRoles());
+        this.service.update(original, usuario);
 
-        UserModel updatedUser = this.repository.save(user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        return new ResponseEntity<>(this.service.update(original, usuario), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        UserModel user = this.repository.findById(id)
+        Usuario user = this.service.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
 
-        this.repository.delete(user);
+        this.service.delete(user);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
