@@ -1,6 +1,6 @@
 package com.galli.loja.config.security.repository;
 
-import com.galli.loja.config.security.model.Usuario;
+import com.galli.loja.domain.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

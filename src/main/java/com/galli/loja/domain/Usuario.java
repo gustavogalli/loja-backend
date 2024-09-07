@@ -1,9 +1,9 @@
-package com.galli.loja.config.security.model;
+package com.galli.loja.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.galli.loja.config.security.enums.Tipo;
-import com.galli.loja.domain.Produto;
+import com.galli.loja.config.security.model.RoleModel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,9 +1,6 @@
 package com.galli.loja.controller;
 
-import com.galli.loja.config.security.enums.RoleName;
-import com.galli.loja.config.security.model.RoleModel;
-import com.galli.loja.config.security.model.Usuario;
-import com.galli.loja.config.security.repository.UserRepository;
+import com.galli.loja.domain.Usuario;
 import com.galli.loja.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,14 +21,13 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 public class UsuarioController {
 
-    @Autowired
-    private UserRepository repository;
+    private final EntityManager entityManager;
+    private final UsuarioService service;
 
-    @Autowired
-    private EntityManager entityManager;
-
-    @Autowired
-    private UsuarioService service;
+    public UsuarioController(EntityManager entityManager, UsuarioService service) {
+        this.entityManager = entityManager;
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll(){
@@ -45,7 +41,7 @@ public class UsuarioController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Usuario> createUser(@RequestBody Usuario usuario){
-        if(this.repository.findByUsername(usuario.getUsername()).isPresent()){
+        if(this.service.findByUsername(usuario).isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!");
         } else {
             return new ResponseEntity<>(this.service.save(usuario), HttpStatus.CREATED);

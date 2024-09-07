@@ -1,6 +1,6 @@
 package com.galli.loja.config.security.service;
 
-import com.galli.loja.config.security.model.Usuario;
+import com.galli.loja.domain.Usuario;
 import com.galli.loja.config.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

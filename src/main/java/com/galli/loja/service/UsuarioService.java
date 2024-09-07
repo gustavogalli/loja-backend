@@ -1,6 +1,6 @@
 package com.galli.loja.service;
 
-import com.galli.loja.config.security.model.Usuario;
+import com.galli.loja.domain.Usuario;
 
 import java.util.List;
 import java.util.Optional;

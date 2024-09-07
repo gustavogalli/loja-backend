@@ -1,7 +1,5 @@
 package com.galli.loja.domain;
 
-import com.galli.loja.config.security.model.Usuario;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 

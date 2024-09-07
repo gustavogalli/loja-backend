@@ -3,7 +3,7 @@ package com.galli.loja.service.impl;
 import com.galli.loja.config.security.enums.RoleName;
 import com.galli.loja.config.security.enums.Tipo;
 import com.galli.loja.config.security.model.RoleModel;
-import com.galli.loja.config.security.model.Usuario;
+import com.galli.loja.domain.Usuario;
 import com.galli.loja.config.security.repository.UserRepository;
 import com.galli.loja.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
