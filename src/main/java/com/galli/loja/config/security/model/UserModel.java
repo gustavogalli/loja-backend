@@ -2,11 +2,10 @@ package com.galli.loja.config.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.galli.loja.domain.Comprador;
-import com.galli.loja.domain.Vendedor;
+import com.galli.loja.config.security.enums.Tipo;
+import com.galli.loja.domain.Produto;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,7 +20,7 @@ import java.lang.Long;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserModel implements UserDetails, Serializable {
 
-    private static final long serialVersionUid = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +29,13 @@ public class UserModel implements UserDetails, Serializable {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(/*nullable = false*/)
+    @Column(nullable = false)
     private String password;
+
+    private String nome;
+    private String email;
+    private String foto;
+    private Tipo tipo;
 
     @ManyToMany
     @JoinTable(name = "users_roles",
@@ -39,13 +43,17 @@ public class UserModel implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<RoleModel> roles;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comprador_id")
-    private Comprador comprador;
+    @OneToMany(mappedBy = "comprador", cascade = CascadeType.ALL)
+    private List<Produto> carrinho;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vendedor_id")
-    private Vendedor vendedor;
+    @OneToMany(mappedBy = "comprador", cascade = CascadeType.ALL)
+    private List<Produto> produtosComprados;
+
+    @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL)
+    private List<Produto> estoque;
+
+    @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL)
+    private List<Produto> produtosVendidos;
 
     @Override
     @JsonIgnore

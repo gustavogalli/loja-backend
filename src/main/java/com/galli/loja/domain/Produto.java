@@ -1,5 +1,7 @@
 package com.galli.loja.domain;
 
+import com.galli.loja.config.security.model.UserModel;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -14,10 +16,13 @@ public class Produto {
     public BigDecimal preco;
     public String categoria;
     public String foto;
-    public int vendidos;
+
+    @ManyToOne
+    @JoinColumn(name = "comprador_id")
+    private UserModel comprador;
 
     @ManyToOne
     @JoinColumn(name = "vendedor_id")
-    private Vendedor vendedor;
+    private UserModel vendedor;
 }
 
