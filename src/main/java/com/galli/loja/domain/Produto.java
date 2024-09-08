@@ -12,6 +12,7 @@ public class Produto {
 
     public String nome;
     public BigDecimal preco;
+    public String descricao;
     public String categoria;
     public String foto;
 

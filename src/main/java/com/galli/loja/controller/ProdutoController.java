@@ -19,7 +19,7 @@ public class ProdutoController {
     private ProdutoService service;
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<Produto>> findAll(){
         return ResponseEntity.ok(this.service.findAll());
     }
