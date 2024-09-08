@@ -24,6 +24,12 @@ public class ProdutoController {
         return ResponseEntity.ok(this.service.findAll());
     }
 
+    @GetMapping("/categoria/{categoria}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    public ResponseEntity<List<Produto>> findByCategoria(@PathVariable String categoria){
+        return ResponseEntity.ok(this.service.findAllByCategoria(categoria));
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Produto> findById(@PathVariable Long id){
