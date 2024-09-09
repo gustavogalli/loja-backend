@@ -10,6 +10,8 @@ public interface ProdutoService {
 
     List<Produto> findAllByCategoria(String categoria);
 
+    List<String> findAllCategorias();
+
     Produto findById(Long id);
 
     Produto save(Produto produto);

@@ -31,6 +31,7 @@ SELECT * FROM (SELECT
     UNION ALL
     SELECT 'Tênis Nike', 300.00, 'Calçados', 'tenis_nike.jpg', 1, 'Tênis Nike Air Max com amortecimento avançado e design esportivo.'
     UNION ALL
+
     SELECT 'Cadeira Gamer', 750.00, 'Móveis', 'cadeira_gamer.jpg', 1, 'Cadeira gamer ergonômica com ajuste de altura e apoio lombar.'
     UNION ALL
     SELECT 'Relógio Apple Watch', 1500.00, 'Acessórios', 'apple_watch.jpg', 1, 'Relógio Apple Watch Series 7 com monitoramento de saúde e GPS.'

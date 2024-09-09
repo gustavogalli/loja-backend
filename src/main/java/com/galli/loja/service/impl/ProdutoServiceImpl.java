@@ -23,6 +23,11 @@ public class ProdutoServiceImpl implements ProdutoService {
         return this.repository.findAllByCategoria(categoria);
     }
 
+    @Override
+    public List<String> findAllCategorias(){
+        return this.repository.findAllCategorias();
+    }
+
     public Produto findById(Long id){
         return this.repository.findById(id).orElse(null);
     }

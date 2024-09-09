@@ -12,7 +12,15 @@ import java.util.List;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Query(
-            value = "select * from produto where categoria = :categoria", nativeQuery = true
+            value = "select * from produto where categoria = :categoria",
+            nativeQuery = true
     )
     List<Produto> findAllByCategoria(@Param("categoria") String categoria);
+
+    @Query(
+//            value = "select distinct categoria from produto order by categoria",
+            value = "select distinct categoria from produto order by categoria",
+            nativeQuery = true
+    )
+    List<String> findAllCategorias();
 }
